@@ -1,3 +1,4 @@
 # Introduction to tube-defender
 
-TODO: write [great documentation](http://jacobian.org/writing/great-documentation/what-to-write/)
+A game where you defend a train station from rat-thingys
+with a frisbee of doom. Watch out for trains.
