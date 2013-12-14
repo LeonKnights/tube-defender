@@ -1,14 +1,15 @@
 (ns tube-defender.core
-  (:use quil.core)
+  (:require  [quil.core :refer :all]
+             [simplecs.core :as sc])
   (:import java.awt.event.KeyEvent)
   (:gen-class))
 
 (def input-keys (atom #{}))
 
 (def params {
-	:screen-dimensions [400 400]
-	:background-colour 255
-	:blob-colour 0
+        :screen-dimensions [400 400]
+        :background-colour 255
+        :blob-colour 0
   :blob-radius 10
   :screen-bounds [0 380]})
 
