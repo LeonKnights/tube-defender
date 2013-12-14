@@ -1,6 +1,7 @@
 (ns tube-defender.core
   (:require  [quil.core :refer :all]
-             [simplecs.core :as sc])
+             [simplecs.core :as sc]
+             [tube-defender.render :as render])
   (:import java.awt.event.KeyEvent)
   (:gen-class))
 
@@ -77,7 +78,7 @@
     :title "Keyboard arrow keys demo"
     :size (params :screen-dimensions)
     :setup setup
-    :draw draw
+    :draw render/render
     :target :perm-frame
     :key-pressed keydown-event
     :key-released keyup-event))
