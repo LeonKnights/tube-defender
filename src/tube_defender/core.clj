@@ -4,6 +4,30 @@
   (:import java.awt.event.KeyEvent)
   (:gen-class))
 
+(sc/defcomponent rat [] {})
+(sc/defcomponent position [x y] {:x x :y y})
+(sc/defcomponentsystem rat-renderer :rat [] [ces entity _] (ellipse ))
+
+
+(def foo [[(rat)  (position 20 40)]
+          [(rat) (position 30 60)]])
+(def ces (atom (sc/make-ces {:entities foo}) ))
+(def ces2 (atom (sc/make-ces {:entities [[(rat)
+                                          (position 20 40)]
+                                         [(rat)
+                                          (position 30 60)]]})))
+
+
+
+(map keys  [@ces2 @ces])
+(= @ces @ces2)
+(macroexpand '(sc/letc ces :rat [x [:position :x]
+                                 y [:position :y]] (str x y)))
+(sc/has-component? ces rat :position)
+
+(sc/get-in-entity ces rat [:postion :x])
+
+
 (def input-keys (atom #{}))
 
 (def params {
