@@ -40,12 +40,6 @@
   (frame-rate 60)
   (background 200))
 
-(defn draw
-  []
-  (background-float (params :background-colour))
-  (fill (params :blob-colour))
-  (text (str @input-keys) 10 350))
-
 (defn startSketch []
   (defsketch key-listener
     :title "Keyboard arrow keys demo"
