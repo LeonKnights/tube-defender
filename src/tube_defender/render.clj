@@ -1,6 +1,24 @@
 (ns tube-defender.render
   (:require [quil.core :refer :all]
+            [quil.helpers.drawing :refer [line-join-points]]
+            [quil.helpers.seqs :refer [range-incl]]
+            [quil.helpers.calc :refer [mul-add]]
             [simplecs.core :as sc]))
+
+(defn custom-rand
+  []
+  (- 1 (pow (random 1) 5)))
+
+(defn draw-health []
+
+  (stroke 300 400 70)
+
+  (let [xs (range-incl 20 480 5)
+        ys (repeatedly custom-rand)
+        scaled-ys (mul-add ys 60 20)
+        line-args (line-join-points xs scaled-ys)]
+
+    (dorun (map #(apply line %) line-args))))
 
 (def params {:screen-dimensions [400 400]
              :background-colour 32,36,35
@@ -25,14 +43,16 @@
   (rect 145 600 195 20)
   ;vertical rails
   (fill 185,183,181)
-  (rect 150 -1 10 600)
-  (rect 325 -1 10 600)
+  (rect 150 -1 10 1000)
+  (rect 325 -1 10 1000)
   )
 
 (defn render-hud
   "Render the game's hud (head up display). This is drawn on top of everything else"
   []
-  (text (str (deref tube-defender.keyinput/input-keys)) 10 350))
+  (draw-health)
+  (stroke (rand-int 255) (rand-int 255) (rand-int 255))
+  (text (str "CATCH THE RATS! AVOID THE TRAIN") 350 (rand-int 20)))
 
 
 (defn draw-rat
@@ -73,7 +93,7 @@
   "Draw a disc at the given x y"
   [pos]
   (fill 128 255 0)
-  (ellipse (:x pos) (:y pos) 80 80))
+  (ellipse (+ (rand-int 4) (:x pos)) (+ (rand-int 4) (:y pos)) (+ (rand-int 2) 80) (+ (rand-int 2) 80)))
 
 (defn render-disc
   "Render the disc entities in the game"
