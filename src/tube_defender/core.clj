@@ -76,8 +76,8 @@
                                         [(rat)
                                          (position 30 60)
                                          (velocity 1)]]
-                             :systems [(rat-mover) (hero-mover)
-                                        ]})))
+                             :systems [(rat-mover) 
+                                       (hero-mover)]})))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -112,6 +112,7 @@
   (render/render-bg)
   (render/render-hero ces)
   (render/render-rats ces)
+  (render/render-disc ces)
   (render/render-hud))
 
 
