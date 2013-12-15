@@ -44,7 +44,7 @@
   (fill (params :blob-colour))
   (text (str @input-keys) 10 350))
 
-(defn- startSketch []
+(defn startSketch []
   (defsketch key-listener
     :title "Keyboard arrow keys demo"
     :size (params :screen-dimensions)
