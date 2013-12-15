@@ -1,7 +1,6 @@
 (ns tube-defender.render
   (:require [quil.core :refer :all]
-            [simplecs.core :as sc]
-            [tube-defender.core :as core]))
+            [simplecs.core :as sc]))
 
 (def params {:screen-dimensions [400 400]
              :background-colour 255
@@ -36,7 +35,7 @@
 (defn render 
   "Renders every entity in the given game state"
   []
-  (let [ces core/ces]
+  (let [ces tube-defender.core/ces]
     (render-bg)
     (render-rats ces)
     (render-hud)))
