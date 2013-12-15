@@ -101,7 +101,6 @@
                                        (hero-mover)
                                         ]})))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; y should inc to 3
 (let [rat-ces (atom (sc/make-ces {:entities [[(rat) (position 10 2) (velocity 0)]]
@@ -134,6 +133,7 @@
   (render/render-bg)
   (render/render-hero ces)
   (render/render-rats ces)
+  (render/render-disc ces)
   (render/render-hud))
 
 

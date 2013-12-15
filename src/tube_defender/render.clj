@@ -11,8 +11,12 @@
 (defn render-bg
   "Render the background. Everything else to be rendered is drawn on top of this."
   []
+  (fill (params :blob-colour))
   (background-float (params :background-colour))
-  (fill (params :blob-colour)))
+  (fill 200)
+  (rect 150 -1 10 600)
+  (rect 325 -1 10 600)
+  )
 
 (defn render-hud
   "Render the game's hud (head up display). This is drawn on top of everything else"
@@ -44,6 +48,19 @@
           hero-positions (map #(sc/get-component @ces % :position) hero-entities)]
          (map draw-hero hero-positions))))
 
+(defn draw-disc
+  "Draw a disc at the given x y"
+  [pos]
+  (fill 128 255 0)
+  (ellipse (:x pos) (:y pos) 80 80))
+
+(defn render-disc
+  "Render the disc entities in the game"
+  [ces]
+  (dorun
+    (let [disc-entities (sc/entities-with-component @ces :disc)
+          disc-positions (map #(sc/get-component @ces % :position) disc-entities)]
+         (map draw-disc disc-positions))))
 
 (defn render-rats
   "Render the rat entities in the game"
