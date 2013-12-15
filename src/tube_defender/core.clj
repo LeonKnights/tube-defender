@@ -12,6 +12,7 @@
 (sc/defcomponent rat [] {})
 (sc/defcomponent hero [] {})
 (sc/defcomponent disc [in-player-hand] {:in-player-hand in-player-hand})
+(sc/defcomponent train [] {})
 (sc/defcomponent position [x y] {:x x :y y})
 (sc/defcomponent volley-multiple [vm] {:vm vm})
 (sc/defcomponent velocity
@@ -26,6 +27,15 @@
            (sc/update-entity ces
                              entity
                              [:position :y] inc)))
+
+
+(sc/defcomponentsystem train-mover :train []
+                       [ces entity _]
+                       (sc/letc ces entity
+                                [y [:position :y]]
+                                (sc/update-entity ces
+                                                  entity
+                                                  [:position :y] inc)))
 
 (sc/defcomponentsystem rat-remover :rat []
   [ces entity _]
@@ -116,36 +126,16 @@
                                          (velocity 1)]
                                         [(rat)
                                          (position 50 60)
-                                         (velocity 1)]]
+                                         (velocity 1)]
+                                        [(train)
+                                         (position 250 0)
+                                         (velocity 5)]]
                              :systems [(rat-mover)
                                        (rat-remover)
                                        (rat-gen)
                                        (hero-mover)
                                        (disc-mover)
                                         ]})))
-
-;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; y should inc to 3
-(let [rat-ces (atom (sc/make-ces {:entities [[(rat) (position 10 2) (velocity 0)]]
-                                  :systems [(rat-gen) (rat-mover)]}))]
-  (swap! rat-ces sc/advance-ces))
-
-;;;;;;;;;;;;;;;;;;;;;;;test hero ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; x should inc to 201
-(let [hero-ces (atom (sc/make-ces {:entities [[(hero) (position 200 400) (velocity 0)]]
-                                   :systems [(hero-mover)]}))]
-  (swap! hero-ces sc/advance-ces))
-
-;;;;;;;;;;;;;;;;test disc ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(let [disc-ces (atom (sc/make-ces {:entities [[(disc :false) (position 200 400) (velocity 10 10)]
-                                              [(rat) (position 10 10) (velocity 20)]]
-                                   :systems [(disc-mover)]}))]
-  (swap! disc-ces sc/advance-ces))
-
-;;;;;;;;;;;;;;;test volley multiple incrementer;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(let [dvm-ces (atom (sc/make-ces {:entities [[(disc :false) (position 200 400) (velocity 0) (volley-multiple 1)]]
-                                  :systems [(volley-multiplier)]}))]
-  (swap! dvm-ces sc/advance-ces))
 
 (defn advance-state []
   (swap! ces sc/advance-ces))
@@ -157,6 +147,7 @@
   (render/render-bg)
   (render/render-hero ces)
   (render/render-rats ces)
+  (render/render-train ces)
   (render/render-disc ces)
   (render/render-hud))
 
