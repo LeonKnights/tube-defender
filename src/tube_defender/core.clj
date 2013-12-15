@@ -12,6 +12,8 @@
 (sc/defcomponent rat [] {})
 (sc/defcomponent hero [] {})
 (sc/defcomponent disc [] {})
+(sc/defcomponent train [] {})
+
 (sc/defcomponent position [x y] {:x x :y y})
 (sc/defcomponent volley-multiple [vm] {:vm vm})
 (sc/defcomponent velocity
@@ -26,6 +28,15 @@
            (sc/update-entity ces
                              entity
                              [:position :y] inc)))
+
+
+(sc/defcomponentsystem train-mover :train []
+                       [ces entity _]
+                       (sc/letc ces entity
+                                [y [:position :y]]
+                                (sc/update-entity ces
+                                                  entity
+                                                  [:position :y] inc)))
 
 (sc/defcomponentsystem rat-remover :rat []
   [ces entity _]
@@ -84,11 +95,6 @@
     (do (reset! rat-rate 0)    (sc/add-entity ces [(rat) (position (rand-int 1000) 0)]))
     (do (swap! rat-rate inc) ces)))
 
-
-
-
-
-
 ;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
                                          (position 200 400)
@@ -105,7 +111,10 @@
                                          (velocity 1)]
                                         [(rat)
                                          (position 50 60)
-                                         (velocity 1)]]
+                                         (velocity 1)]
+                                        [(train)
+                                         (position 250 0)
+                                         (velocity 5)]]
                              :systems [(rat-mover)
                                        (rat-remover)
                                        (rat-gen)
@@ -123,6 +132,7 @@
   (render/render-bg)
   (render/render-hero ces)
   (render/render-rats ces)
+  (render/render-train ces)
   (render/render-disc ces)
   (render/render-hud))
 

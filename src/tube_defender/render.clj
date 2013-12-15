@@ -40,6 +40,16 @@
   (rect (:x pos) (+ (rand-int 10) (- (:y pos) 20)) 20 10)
   (rect (+ (:x pos) 40) (+ (rand-int 10) (- (:y pos) 20)) 20 10))
 
+(defn draw-train
+  "Draw a train at the given x y"
+  [pos]
+  (fill 255,17,0 )
+  (ellipse 250 44 50 200)
+  (fill 246,243,80)
+  ;(triangle 250 50 22 15 200 20)
+  ;(def x1 {:x 10 :y 5})
+  )
+
 (defn render-hero
   "Render the hero entities in the game"
   [ces]
