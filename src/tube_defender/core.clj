@@ -40,7 +40,8 @@
 
 ;;;;;;;;volley multiple should inc if disc is caught by hero, but that logic is outside of this system. all it cares about is how to do it;;;;;
 (sc/defcomponentsystem volley-multiplier :disc []
-  [ces entity ])
+  [ces entity _]
+  (sc/update-entity ces entity [:volley-multiple :vm] inc))
 
 ;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
@@ -75,6 +76,15 @@
 (let [disc-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 0)]]
                                    :systems [(disc-mover)]}))]
   (swap! disc-ces sc/advance-ces))
+
+;;;;;;;;;;;;;;;test volley multiple incrementer;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(let [dvm-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 0) (volley-multiple 1)]]
+                                  :systems [(volley-multiplier)]}))]
+  (swap! dvm-ces sc/advance-ces))
+
+(defn setup []
+  (smooth)
+  (no-stroke))
 
 (defn advance-state []
   (swap! ces sc/advance-ces))
