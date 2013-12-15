@@ -12,7 +12,9 @@
 (sc/defcomponent disc [] {})
 (sc/defcomponent position [x y] {:x x :y y})
 (sc/defcomponent volley-multiple [vm] {:vm vm})
-(sc/defcomponent velocity [v] {:v v})
+(sc/defcomponent velocity
+                 ([v] {:v v})
+                 ([x y] {:v x :x x :y y}))
 
 ;;;;;;;;;;;;;;;;;;;systems;;;;;;;;;;;;;;;;;;;
 (sc/defcomponentsystem rat-mover :rat  []
@@ -38,12 +40,18 @@
                    :else ces))))
 
 ;;;;;;;disc mover should use keybindings instead of just calling inc;;;;;;;
-(sc/defcomponentsystem disc-mover :disc []
+(sc/defcomponentsystem disc-mover :disc  []
   [ces entity _]
   (sc/letc ces entity
-  [x [:position :x]
-   y [:position :y]]
-  (sc/update-entity (sc/update-entity ces entity [:position :y] inc) entity [:position :x] inc)))
+           [dx [:velocity :x]
+            dy [:velocity :y]
+            x  [:position :x]
+            y  [:position :y]]
+           (sc/update-entity 
+                             (sc/update-entity ces entity
+                                               [:position :y] + dy)
+                             entity
+                             [:position :x] + dx)))
 
 ;;;;;disc position validator will make sure the junk don't fly off the dern screen;;;;;
 (sc/defcomponentsystem disc-move-validator :disc []
@@ -70,7 +78,7 @@
                                          (velocity 0)]
                                         [(disc)
                                          (position 220 480)
-                                         (velocity 10)
+                                         (velocity 0 0)
                                          (volley-multiple 1)]
                                         [(rat)
                                          (position 20 40)
@@ -82,7 +90,8 @@
                                          (position 50 60)
                                          (velocity 1)]]
                              :systems [(rat-mover) 
-                                       (hero-mover)]})))
+                                       (hero-mover)
+                                       (disc-mover)]})))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; y should inc to 3
