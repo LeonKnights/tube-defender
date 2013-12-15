@@ -75,7 +75,9 @@
             y  [:position :y]
             disc-held-by-player [:disc :in-player-hand]]
             (if disc-held-by-player
-              (set-entity-position ces entity x y)
+              (let [hero-entity (first (sc/entities-with-component ces :hero))
+                    hero-pos (sc/get-component ces hero-entity :position)]
+                (set-entity-position ces entity (:x hero-pos) (:y hero-pos)))
               (sc/update-entity
                                (sc/update-entity ces entity
                                                  [:position :y] + dy)
@@ -109,11 +111,11 @@
 (def ces (atom (sc/make-ces {:entities [[(hero)
                                          (position 200 400)
                                          (velocity 0)]
-                                        [(disc :true)
+                                        [(disc true)
                                          (position 220 480)
                                          (velocity 0 0)
                                          (volley-multiple 1)]
-                                        [(disc :false)
+                                        [(disc false)
                                          (position 120 480)
                                          (velocity 1 1)
                                          (volley-multiple 1)]
