@@ -110,10 +110,9 @@
 (defn advance-state []
   (swap! ces sc/advance-ces))
 
-(defn draw
-  [])
-
 (defn -main
   "main"
   [& args]
   (tube-defender.key-input/startSketch))
+
+(def startSketch tube-defender.key-input/startSketch)

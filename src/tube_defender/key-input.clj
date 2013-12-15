@@ -34,9 +34,11 @@
                           (key-code) ;;then
                           (raw-key))] ;;else
     (swap! input-keys disj key-released)))
+
 (defn setup []
   (smooth)
-  (no-stroke))
+  (frame-rate 60)
+  (background 200))
 
 (defn draw
   []
@@ -49,7 +51,7 @@
     :title "Keyboard arrow keys demo"
     :size (params :screen-dimensions)
     :setup setup
-    :draw draw
+    :draw tube-defender.render/render
     :target :perm-frame
     :key-pressed keydown-event
     :key-released keyup-event))
