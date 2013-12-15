@@ -23,8 +23,6 @@
                              entity
                              [:position :y] inc)))
 
-(sc/update-entity @ces 0 [:position :y] inc)
-
 ;;;;;;;hero mover should use key bindings instead of just calling inc
 (sc/defcomponentsystem hero-mover :hero  []
   [ces entity _]
@@ -94,4 +92,4 @@
 (defn -main
   "main"
   [& args]
-  (startSketch))
+  (tube-defender.key-input/startSketch))
