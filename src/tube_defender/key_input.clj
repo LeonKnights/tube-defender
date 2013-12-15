@@ -34,20 +34,3 @@
                           (key-code) ;;then
                           (raw-key))] ;;else
     (swap! input-keys disj key-released)))
-
-(defn setup []
-  (smooth)
-  (frame-rate 60)
-  (background 200))
-
-(defn startSketch []
-  (defsketch key-listener
-    :title "Keyboard arrow keys demo"
-    :size (params :screen-dimensions)
-    :setup setup
-    :draw tube-defender.render/render
-    :target :perm-frame
-    :key-pressed keydown-event
-    :key-released keyup-event))
-
-(startSketch)
