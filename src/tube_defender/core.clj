@@ -55,7 +55,7 @@
             dy [:velocity :y]
             x  [:position :x]
             y  [:position :y]]
-           (sc/update-entity 
+           (sc/update-entity
                              (sc/update-entity ces entity
                                                [:position :y] + dy)
                              entity
@@ -126,7 +126,8 @@
   (swap! hero-ces sc/advance-ces))
 
 ;;;;;;;;;;;;;;;;test disc ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(let [disc-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 0)]]
+(let [disc-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 10 10)]
+                                              [(rat) (position 10 10) (velocity 20)]]
                                    :systems [(disc-mover)]}))]
   (swap! disc-ces sc/advance-ces))
 
