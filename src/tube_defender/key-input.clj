@@ -1,4 +1,6 @@
-(ns tube-defender.key-input (:require [quil.core :refer :all]))
+(ns tube-defender.key-input 
+  (:require [quil.core :refer :all])
+  (:import java.awt.event.KeyEvent))
 
 (def input-keys (atom #{}))
 
