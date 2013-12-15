@@ -37,7 +37,6 @@
                    right (sc/update-entity ces entity [:position :x] inc)
                    :else ces))))
 
-
 ;;;;;;;disc mover should use keybindings instead of just calling inc;;;;;;;
 (sc/defcomponentsystem disc-mover :disc []
   [ces entity _]
@@ -62,9 +61,12 @@
   [ces entity _]
   (sc/update-entity ces entity [:volley-multiple :vm] inc))
 
+;;;;;;;;;;;;;;;rat generator;;;;;;;;;;;;;;;;;
+;(sc/defsystem rat-gen  )
+
 ;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
-                                         (position 200 200)
+                                         (position 200 400)
                                          (velocity 0)]
                                         [(disc)
                                          (position 220 480)
@@ -75,8 +77,12 @@
                                          (velocity 1)]
                                         [(rat)
                                          (position 30 60)
+                                         (velocity 1)]
+                                        [(rat)
+                                         (position 50 60)
                                          (velocity 1)]]
-                             :systems [(rat-mover) (hero-mover)
+                             :systems [(rat-mover)
+                                       (hero-mover)
                                         ]})))
 
 
