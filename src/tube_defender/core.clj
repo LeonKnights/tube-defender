@@ -11,7 +11,7 @@
 
 (sc/defcomponent rat [] {})
 (sc/defcomponent hero [] {})
-(sc/defcomponent disc [] {})
+(sc/defcomponent disc [in-player-hand] {:in-player-hand in-player-hand})
 (sc/defcomponent position [x y] {:x x :y y})
 (sc/defcomponent volley-multiple [vm] {:vm vm})
 (sc/defcomponent velocity
@@ -48,18 +48,30 @@
                    :else ces))))
 
 ;;;;;;;disc mover should use keybindings instead of just calling inc;;;;;;;
+(defn set-entity-position 
+  "Update the x and y in position component for given entity"
+  [ces entity x y]
+  (sc/update-entity
+    (sc/update-entity ces entity
+                      [:position :y] (fn [& _] y))
+    entity
+    [:position :x] (fn [& _] x)))
+
 (sc/defcomponentsystem disc-mover :disc  []
   [ces entity _]
   (sc/letc ces entity
            [dx [:velocity :x]
             dy [:velocity :y]
             x  [:position :x]
-            y  [:position :y]]
-           (sc/update-entity
-                             (sc/update-entity ces entity
-                                               [:position :y] + dy)
-                             entity
-                             [:position :x] + dx)))
+            y  [:position :y]
+            disc-held-by-player [:disc :in-player-hand]]
+            (if disc-held-by-player
+              (set-entity-position ces entity x y)
+              (sc/update-entity
+                               (sc/update-entity ces entity
+                                                 [:position :y] + dy)
+                               entity
+                               [:position :x] + dx))))
 
 ;;;;;disc position validator will make sure the junk don't fly off the dern screen;;;;;
 (sc/defcomponentsystem disc-move-validator :disc []
@@ -84,18 +96,17 @@
     (do (reset! rat-rate 0)    (sc/add-entity ces [(rat) (position (rand-int 1000) 0)]))
     (do (swap! rat-rate inc) ces)))
 
-
-
-
-
-
 ;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
                                          (position 200 400)
                                          (velocity 0)]
-                                        [(disc)
+                                        [(disc :true)
                                          (position 220 480)
                                          (velocity 0 0)
+                                         (volley-multiple 1)]
+                                        [(disc :false)
+                                         (position 120 480)
+                                         (velocity 1 1)
                                          (volley-multiple 1)]
                                         [(rat)
                                          (position 20 40)
@@ -126,13 +137,13 @@
   (swap! hero-ces sc/advance-ces))
 
 ;;;;;;;;;;;;;;;;test disc ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(let [disc-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 10 10)]
+(let [disc-ces (atom (sc/make-ces {:entities [[(disc :false) (position 200 400) (velocity 10 10)]
                                               [(rat) (position 10 10) (velocity 20)]]
                                    :systems [(disc-mover)]}))]
   (swap! disc-ces sc/advance-ces))
 
 ;;;;;;;;;;;;;;;test volley multiple incrementer;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(let [dvm-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 0) (volley-multiple 1)]]
+(let [dvm-ces (atom (sc/make-ces {:entities [[(disc :false) (position 200 400) (velocity 0) (volley-multiple 1)]]
                                   :systems [(volley-multiplier)]}))]
   (swap! dvm-ces sc/advance-ces))
 
