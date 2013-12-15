@@ -6,6 +6,8 @@
   (:gen-class))
 
 (def rat-rate (atom 0))
+(def playfield-size {:height 500
+                     :width  500})
 
 ;;;;;;;;;;;;;;;;components;;;;;;;;;;;;;;;;;;
 
@@ -89,13 +91,16 @@
 (sc/defcomponentsystem disc-move-validator :disc []
   [ces entity _]
   (sc/letc ces entity
-  [x [:position :x]
-   y [:position :y]]
+           [x [:position :x]
+            y [:position :y]
+            dx [:velocity :x]
+            dy [:velocity :y]]
+            #_(if (> x (:width playfield-size))
   ;;when not inside the bounds of the window, negate
   (when (not (and (< 0 x 500) (< 0 y 500))) (sc/update-entity (sc/update-entity ces entity [:position :y] - y) entity [:position :x] - x) )
 ;;if edge of screen, reverse x, if top of screen reverse y, if bottom and not on player, stop
   ;;(sc/update-entity (sc/update-entity ces entity [:position :y] inc) entity [:position :x] inc)
-  ))
+  )))
 ;;;;;;;;volley multiple should inc if disc is caught by hero, but that logic is outside of this system. all it cares about is how to do it;;;;;
 (sc/defcomponentsystem volley-multiplier :disc []
   [ces entity _]
@@ -163,7 +168,8 @@
   "main"
   [& args]
  (sketch :title "TUBE DEFENDER"
-    :size [500 500]
+    :size [(:height playfield-size)
+           (:width playfield-size)]
     :setup setup
     :draw core-render
     :target :perm-frame
