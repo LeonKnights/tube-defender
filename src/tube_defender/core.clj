@@ -25,9 +25,11 @@
                              entity
                              [:position :y] inc)))
 
-#_(sc/defcomponentsystem rat-remover :rat []
+(sc/defcomponentsystem rat-remover :rat []
   [ces entity _]
-   )
+  (sc/letc ces entity
+           [y [:position :y]]
+           (if (< y 300) ces (sc/remove-entity ces entity))))
 
 ;;;;;;;hero mover should use key bindings instead of just calling inc
 ;;;;TODO. make this thing work plz
@@ -97,6 +99,7 @@
                                          (position 50 60)
                                          (velocity 1)]]
                              :systems [(rat-mover)
+                                       (rat-remover)
                                        (rat-gen)
                                        (hero-mover)
                                         ]})))
