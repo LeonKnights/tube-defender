@@ -3,7 +3,7 @@
             [simplecs.core :as sc]))
 
 (def params {:screen-dimensions [400 400]
-             :background-colour 255
+             :background-colour 32,36,35
              :blob-colour 0
              :blob-radius 10
              :screen-bounds [0 380]})
@@ -14,6 +14,16 @@
   (fill (params :blob-colour))
   (background-float (params :background-colour))
   (fill 200)
+
+  ;horizontal rails
+  (rect 145 0 195 10)
+  (rect 145 100 195 10)
+  (rect 145 200 195 10)
+  (rect 145 300 195 10)
+  (rect 145 400 195 10)
+  (rect 145 500 195 10)
+  (rect 145 600 195 10)
+  ;vertical rails
   (rect 150 -1 10 600)
   (rect 325 -1 10 600)
   )
@@ -27,8 +37,8 @@
 (defn draw-rat
   "Draw a rat at the given x y"
   [pos]
-  (fill-int 128)
-  (ellipse (:x pos) (:y pos) 10 10))
+  (fill 130,120,98)
+  (ellipse (:x pos) (:y pos) 10 30))
 
 (defn draw-hero "draw our hero"
   [pos]
@@ -79,3 +89,11 @@
     (let [rat-entities (sc/entities-with-component @ces :rat)
           rat-positions (map #(sc/get-component @ces % :position) rat-entities)]
          (map draw-rat rat-positions))))
+
+(defn render-train
+  "Render the train entities in the game"
+  [ces]
+  (dorun
+    (let [train-entities (sc/entities-with-component @ces :train)
+          train-positions (map #(sc/get-component @ces % :position) train-entities)]
+      (map draw-train train-positions))))
