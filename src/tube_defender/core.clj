@@ -23,7 +23,7 @@
                              entity
                              [:position :y] inc)))
 
-#_(sc/update-entity @ces 0 [:position :y] inc)
+(sc/update-entity @ces 0 [:position :y] inc)
 
 ;;;;;;;hero mover should use key bindings instead of just calling inc
 (sc/defcomponentsystem hero-mover :hero  []
@@ -38,8 +38,11 @@
   (sc/letc ces entity
   [x [:position :x]
    y [:position :y]]
-  (sc/update-entity ces entity [:position :x] inc)
-  (sc/update-entity ces entity [:position :y] inc)))
+  (sc/update-entity (sc/update-entity ces entity [:position :y] inc) entity [:position :x] inc)))
+
+;;;;;;;;volley multiple should inc if disc is caught by hero, but that logic is outside of this system. all it cares about is how to do it;;;;;
+(sc/defcomponentsystem volley-multiplier :disc []
+  [ces entity ])
 
 ;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
@@ -56,10 +59,6 @@
                                          (position 30 60)
                                          (velocity 1)]]
                              :systems [(rat-mover)]})))
-
-
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -81,8 +80,6 @@
 
 
 
-(:simplecs.core/components @ces)
-
 
 (defn setup []
   (smooth)
@@ -97,4 +94,4 @@
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (tube-defender.key-input/startSketch))
+  (startSketch))
