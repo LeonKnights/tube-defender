@@ -12,6 +12,8 @@
 (sc/defcomponent rat [] {})
 (sc/defcomponent hero [] {})
 (sc/defcomponent disc [] {})
+(sc/defcomponent train [] {})
+
 (sc/defcomponent position [x y] {:x x :y y})
 (sc/defcomponent volley-multiple [vm] {:vm vm})
 (sc/defcomponent velocity
@@ -26,6 +28,15 @@
            (sc/update-entity ces
                              entity
                              [:position :y] inc)))
+
+
+(sc/defcomponentsystem train-mover :train []
+                       [ces entity _]
+                       (sc/letc ces entity
+                                [y [:position :y]]
+                                (sc/update-entity ces
+                                                  entity
+                                                  [:position :y] inc)))
 
 (sc/defcomponentsystem rat-remover :rat []
   [ces entity _]
@@ -105,7 +116,10 @@
                                          (velocity 1)]
                                         [(rat)
                                          (position 50 60)
-                                         (velocity 1)]]
+                                         (velocity 1)]
+                                        [(train)
+                                         (position 250 0)
+                                         (velocity 5)]]
                              :systems [(rat-mover)
                                        (rat-remover)
                                        (rat-gen)
@@ -136,6 +150,10 @@
                                   :systems [(volley-multiplier)]}))]
   (swap! dvm-ces sc/advance-ces))
 
+(let [train-ces (atom (sc/make-ces {:entities [[(train) (position 100 55) (velocity 5)]]
+                                  :systems [(train-mover)]}))]
+  (swap! train-ces sc/advance-ces))
+
 (defn advance-state []
   (swap! ces sc/advance-ces))
 
@@ -146,6 +164,7 @@
   (render/render-bg)
   (render/render-hero ces)
   (render/render-rats ces)
+  (render/render-train ces)
   (render/render-disc ces)
   (render/render-hud))
 
