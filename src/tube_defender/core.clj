@@ -76,20 +76,12 @@
                                    :systems [(disc-mover)]}))]
   (swap! disc-ces sc/advance-ces))
 
-
-
-
-(defn setup []
-  (smooth)
-  (no-stroke))
-
 (defn advance-state []
   (swap! ces sc/advance-ces))
-
-(defn draw
-  [])
 
 (defn -main
   "main"
   [& args]
   (tube-defender.key-input/startSketch))
+
+(def startSketch tube-defender.key-input/startSketch)
