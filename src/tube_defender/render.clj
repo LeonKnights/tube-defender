@@ -103,6 +103,7 @@
   (fill 128 255 0)
   (ellipse (+ (rand-int 4) (:x pos)) (+ (rand-int 4) (:y pos)) (+ (rand-int 2) 80) (+ (rand-int 2) 80)))
 
+
 (defn render-disc
   "Render the disc entities in the game"
   [ces]
