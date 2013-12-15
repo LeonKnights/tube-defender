@@ -52,7 +52,7 @@
   []
   (draw-health)
   (stroke (rand-int 255) (rand-int 255) (rand-int 255))
-  (text (str "CATCH THE RATS! AVOID THE TRAIN") 350 (rand-int 20)))
+  (text (str "CATCH THE RATS! AVOID THE TRAIN") 250 (rand-int 20)))
 
 
 (defn draw-rat
