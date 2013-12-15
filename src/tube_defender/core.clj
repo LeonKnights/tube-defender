@@ -1,7 +1,7 @@
 (ns tube-defender.core
   (:require  [quil.core :refer :all]
              [simplecs.core :as sc]
-             [tube-defender.key-input :only input-keys]
+             [tube-defender.key-input :as ki]
              [tube-defender.render :as render])
   (:gen-class))
 
@@ -28,7 +28,13 @@
   [ces entity _]
   (sc/letc ces entity
            [x [:position :x]]
-           (sc/update-entity ces entity [:position :x] inc)))
+           (let [left (contains? @ki/input-keys)
+                 right (contains? @ki/input-keys)
+                 both (and left right)]
+             (cond both ces
+                   left (sc/update-entity ces entity [:position :x] dec)
+                   right (sc/update-entity ces entity [:position :x inc])))))
+
 
 ;;;;;;;disc mover should use keybindings instead of just calling inc;;;;;;;
 (sc/defcomponentsystem disc-mover :disc []
@@ -54,8 +60,6 @@
   [ces entity _]
   (sc/update-entity ces entity [:volley-multiple :vm] inc))
 
-
-
 ;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
                                          (position 200 500)
@@ -70,7 +74,7 @@
                                         [(rat)
                                          (position 30 60)
                                          (velocity 1)]]
-                             :systems [(rat-mover)]})))
+                             :systems [(rat-mover) (hero-mover)]})))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -78,10 +82,6 @@
 (let [rat-ces (atom (sc/make-ces {:entities [[(rat) (position 10 2) (velocity 0)]]
                                   :systems [(rat-mover)]}))]
   (swap! rat-ces sc/advance-ces))
-
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;test hero ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; x should inc to 201
@@ -101,8 +101,6 @@
 
 
 
-
-
 (defn setup []
   (smooth)
   (no-stroke))
@@ -113,6 +111,6 @@
 (defn -main
   "main"
   [& args]
-  (tube-defender.key-input/startSketch))
+  (ki/startSketch))
 
 (def startSketch tube-defender.key-input/startSketch)
