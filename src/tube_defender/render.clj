@@ -17,7 +17,7 @@
 (defn render-hud
   "Render the game's hud (head up display). This is drawn on top of everything else"
   []
-  (text #_(str @input-keys) "hello" 10 350))
+  (text (str (deref tube-defender.key-input/input-keys)) 10 350)) ;;TODO string cannot be cast to number? look at quil docs
 
 
 (defn rat
@@ -30,7 +30,7 @@
   [ces]
   (let [rat-entities (sc/entities-with-component @ces :rat)
         rat-positions (map #(sc/get-component @ces % :position) rat-entities)]
-    (map (fn [rat-pos] (str #_ellipse (:x rat-pos) (:y rat-pos) 10 10)) rat-positions)))
+    (map (fn [rat-pos] (ellipse (:x rat-pos) (:y rat-pos) 10 10)) rat-positions)))
 
 (defn render 
   "Renders every entity in the given game state"
