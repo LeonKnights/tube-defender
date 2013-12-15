@@ -15,8 +15,7 @@
 (sc/defcomponent velocity [v] {:v v})
 
 ;;;;;;;;;;;;;;;;;;;systems;;;;;;;;;;;;;;;;;;;
-(sc/defcomponentsystem rat-mover :rat
-  []
+(sc/defcomponentsystem rat-mover :rat  []
   [ces entity _]
   (sc/letc ces entity
            [y [:position :y]]
@@ -26,6 +25,23 @@
 
 (sc/update-entity @ces 0 [:position :y] inc)
 
+;;;;;;;hero mover should use key bindings instead of just calling inc
+(sc/defcomponentsystem hero-mover :hero  []
+  [ces entity _]
+  (sc/letc ces entity
+           [x [:position :x]]
+           (sc/update-entity ces entity [:position :x] inc)))
+
+;;;;;;;disc mover should use keybindings instead of just calling inc;;;;;;;
+(sc/defcomponentsystem disc-mover :disc []
+  [ces entity _]
+  (sc/letc ces entity
+  [x [:position :x]
+   y [:position :y]]
+  (sc/update-entity ces entity [:position :x] inc)
+  (sc/update-entity ces entity [:position :y] inc)))
+
+;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
                                          (position 200 500)
                                          (velocity 0)]
@@ -40,11 +56,30 @@
                                          (position 30 60)
                                          (velocity 1)]]
                              :systems [(rat-mover)]})))
-(def rat-ces (atom (sc/make-ces {:entities [[(rat) (position 10 2) (velocity 0)]]
-                                 :systems [(rat-mover)]})))
 
-((:fn (rat-mover)) rat-ces)
-(swap! ces sc/advance-ces)
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; y should inc to 3
+(let [rat-ces (atom (sc/make-ces {:entities [[(rat) (position 10 2) (velocity 0)]]
+                                  :systems [(rat-mover)]}))]
+  (swap! rat-ces sc/advance-ces))
+
+;;;;;;;;;;;;;;;;;;;;;;;test hero ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; x should inc to 201
+(let [hero-ces (atom (sc/make-ces {:entities [[(hero) (position 200 400) (velocity 0)]]
+                                   :systems [(hero-mover)]}))]
+  (swap! hero-ces sc/advance-ces))
+
+;;;;;;;;;;;;;;;;test disc ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(let [disc-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 0)]]
+                                   :systems [(disc-mover)]}))]
+  (swap! disc-ces sc/advance-ces))
+
+
 
 (:simplecs.core/components @ces)
 
