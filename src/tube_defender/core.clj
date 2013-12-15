@@ -24,16 +24,17 @@
                              [:position :y] inc)))
 
 ;;;;;;;hero mover should use key bindings instead of just calling inc
-(sc/defcomponentsystem hero-mover :hero  []
+;;;;TODO. make this thing work plz
+#_(sc/defcomponentsystem hero-mover :hero  []
   [ces entity _]
   (sc/letc ces entity
            [x [:position :x]]
-           (let [left (contains? @ki/input-keys)
-                 right (contains? @ki/input-keys)
+           (let [left (contains? @ki/input-keys \a)
+                 right (contains? @ki/input-keys \d)
                  both (and left right)]
-             (cond both ces
+             (cond both nil
                    left (sc/update-entity ces entity [:position :x] dec)
-                   right (sc/update-entity ces entity [:position :x inc])))))
+                   right (sc/update-entity ces entity [:position :x] inc)))))
 
 
 ;;;;;;;disc mover should use keybindings instead of just calling inc;;;;;;;
@@ -99,14 +100,17 @@
                                   :systems [(volley-multiplier)]}))]
   (swap! dvm-ces sc/advance-ces))
 
-
-
-(defn setup []
-  (smooth)
-  (no-stroke))
-
 (defn advance-state []
   (swap! ces sc/advance-ces))
+
+(defn core-render
+  "Renders every entity in the given game state"
+  [& whatevs]
+  (advance-state)
+  (render/render-bg)
+  (render/render-rats ces)
+  (render/render-hud))
+
 
 (defn setup []
   (smooth)
@@ -119,7 +123,7 @@
  (sketch :title "TUBE DEFENDER"
     :size [500 500]
     :setup setup
-    :draw render/render
+    :draw core-render
     :target :perm-frame
     :key-pressed ki/keydown-event
     :key-released ki/keyup-event))
