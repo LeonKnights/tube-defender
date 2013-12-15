@@ -25,14 +25,14 @@
 
 ;;;;;;;hero mover should use key bindings instead of just calling inc
 ;;;;TODO. make this thing work plz
-#_(sc/defcomponentsystem hero-mover :hero  []
+(sc/defcomponentsystem hero-mover :hero  []
   [ces entity _]
   (sc/letc ces entity
            [x [:position :x]]
            (let [left (contains? @ki/input-keys \a)
                  right (contains? @ki/input-keys \d)
                  both (and left right)]
-             (cond both nil
+             (cond both (sc/update-entity ces entity [:position :x] dec)
                    left (sc/update-entity ces entity [:position :x] dec)
                    right (sc/update-entity ces entity [:position :x] inc)))))
 
@@ -46,16 +46,16 @@
   (sc/update-entity (sc/update-entity ces entity [:position :y] inc) entity [:position :x] inc)))
 
 ;;;;;disc position validator will make sure the junk don't fly off the dern screen;;;;;
-(sc/defcomponentsystem disc-mover :disc []
+(sc/defcomponentsystem disc-move-validator :disc []
   [ces entity _]
   (sc/letc ces entity
   [x [:position :x]
    y [:position :y]]
+  ;;when not inside the bounds of the window, negate
+  (when (not (and (< 0 x 500) (< 0 y 500))) (sc/update-entity (sc/update-entity ces entity [:position :y] - y) entity [:position :x] - x) )
 ;;if edge of screen, reverse x, if top of screen reverse y, if bottom and not on player, stop
-  ;(sc/update-entity (sc/update-entity ces entity [:position :y] inc) entity [:position :x] inc)
+  ;;(sc/update-entity (sc/update-entity ces entity [:position :y] inc) entity [:position :x] inc)
   ))
-
-
 ;;;;;;;;volley multiple should inc if disc is caught by hero, but that logic is outside of this system. all it cares about is how to do it;;;;;
 (sc/defcomponentsystem volley-multiplier :disc []
   [ces entity _]
@@ -63,7 +63,7 @@
 
 ;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
-                                         (position 200 500)
+                                         (position 200 200)
                                          (velocity 0)]
                                         [(disc)
                                          (position 220 480)
@@ -75,7 +75,8 @@
                                         [(rat)
                                          (position 30 60)
                                          (velocity 1)]]
-                             :systems [(rat-mover)]})))
+                             :systems [(rat-mover)
+                                        ]})))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -86,7 +87,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;test hero ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; x should inc to 201
-#_(let [hero-ces (atom (sc/make-ces {:entities [[(hero) (position 200 400) (velocity 0)]]
+(let [hero-ces (atom (sc/make-ces {:entities [[(hero) (position 200 400) (velocity 0)]]
                                    :systems [(hero-mover)]}))]
   (swap! hero-ces sc/advance-ces))
 
@@ -108,6 +109,7 @@
   [& whatevs]
   (advance-state)
   (render/render-bg)
+  (render/render-hero ces)
   (render/render-rats ces)
   (render/render-hud))
 

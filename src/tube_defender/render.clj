@@ -26,6 +26,24 @@
   (fill-int 128)
   (ellipse (:x pos) (:y pos) 10 10))
 
+(defn draw-hero "draw our hero"
+  [pos]
+  (let [x (:x pos)
+        y (:y pos)]
+  (fill 255 0 0)
+  (rect x y 20 20)
+  (fill 0 0 255)
+  (rect x (+ 20 y) 40 40 )))
+
+(defn render-hero
+  "Render the hero entities in the game"
+  [ces]
+  (dorun
+    (let [hero-entities (sc/entities-with-component @ces :hero)
+          hero-positions (map #(sc/get-component @ces % :position) hero-entities)]
+         (map draw-hero hero-positions))))
+
+
 (defn render-rats
   "Render the rat entities in the game"
   [ces]
