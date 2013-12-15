@@ -13,17 +13,18 @@
   []
   (fill (params :blob-colour))
   (background-float (params :background-colour))
-  (fill 200)
+  (fill 91,70,25)
 
   ;horizontal rails
-  (rect 145 0 195 10)
-  (rect 145 100 195 10)
-  (rect 145 200 195 10)
-  (rect 145 300 195 10)
-  (rect 145 400 195 10)
-  (rect 145 500 195 10)
-  (rect 145 600 195 10)
+  (rect 145 0 195 20)
+  (rect 145 100 195 20)
+  (rect 145 200 195 20)
+  (rect 145 300 195 20)
+  (rect 145 400 195 20)
+  (rect 145 500 195 20)
+  (rect 145 600 195 20)
   ;vertical rails
+  (fill 185,183,181)
   (rect 150 -1 10 600)
   (rect 325 -1 10 600)
   )
@@ -54,7 +55,7 @@
   "Draw a train at the given x y"
   [pos]
   (fill 255,17,0 )
-  (ellipse 250 44 50 200)
+  (ellipse (:x pos) (:y pos) 50 200)
   (fill 246,243,80)
   ;(triangle 250 50 22 15 200 20)
   ;(def x1 {:x 10 :y 5})

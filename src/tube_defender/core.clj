@@ -44,7 +44,6 @@
   (sc/letc ces entity
            [y [:position :y]]
            (if (< y 300) ces (sc/remove-entity ces entity))))
-
 ;;;;;;;hero mover should use key bindings instead of just calling inc
 ;;;;TODO. make this thing work plz
 (sc/defcomponentsystem hero-mover :hero  []
@@ -55,12 +54,12 @@
                  right (contains? @ki/input-keys \d)
                  both (and left right)]
              (cond both (sc/update-entity ces entity [:position :x] dec)
-                   left (sc/update-entity ces entity [:position :x] dec)
-                   right (sc/update-entity ces entity [:position :x] inc)
+                   left (sc/update-entity ces entity [:position :x] - 5)
+                   right (sc/update-entity ces entity [:position :x] + 5)
                    :else ces))))
 
 ;;;;;;;disc mover should use keybindings instead of just calling inc;;;;;;;
-(defn set-entity-position 
+(defn set-entity-position
   "Update the x and y in position component for given entity"
   [ces entity x y]
   (sc/update-entity
@@ -142,6 +141,7 @@
                                        (rat-gen)
                                        (hero-mover)
                                        (disc-mover)
+                                       (train-mover)
                                         ]})))
 
 (defn advance-state []
