@@ -38,6 +38,7 @@
   "Renders every entity in the given game state"
   []
   (let [ces tube-defender.core/ces]
+    (tube-defender.core/advance-state)
     (render-bg)
     (render-rats ces)
     (render-hud)))
