@@ -43,8 +43,9 @@
   (rect 145 600 195 20)
   ;vertical rails
   (fill 185,183,181)
-  (rect 150 -1 10 1000)
-  (rect 325 -1 10 1000)
+  (rect 150 -1 10 600)
+  (rect 325 -1 10 600)
+  (triangle 100 100 10 20 20 10)
   )
 
 (defn render-hud
@@ -58,7 +59,15 @@
 (defn draw-rat
   "Draw a rat at the given x y"
   [pos]
-  (fill 130,120,98)
+  (fill 130 120 98)
+  (let [x (:x pos)
+        y (:y pos)]
+    (triangle (+ (- 15) x) (+ y (rand-int 7))
+              (+ 15 x) (+ y (rand-int 7))
+              x (+ 5 y))
+    (triangle (+ (- 15) x) (+ (- y 15) (rand-int 7))
+              (+ 15 x)     (+ (- y 15) (rand-int 7))
+              x (+ (- 5) y)))
   (ellipse (:x pos) (:y pos) 10 30))
 
 (defn draw-hero "draw our hero"
@@ -75,9 +84,9 @@
   "Draw a train at the given x y"
   [pos]
   (fill 255,17,0 )
-  (ellipse (:x pos) (:y pos) 50 200)
+  (rect (:x pos) (:y pos) 50 500)
   (fill 246,243,80)
-  ;(triangle 250 50 22 15 200 20)
+  (triangle 250 50 22 15 200 20)
   ;(def x1 {:x 10 :y 5})
   )
 
