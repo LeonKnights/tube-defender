@@ -26,14 +26,22 @@
   (fill-int 128)
   (ellipse (:x pos) (:y pos) 10 10))
 
-(defn draw-hero "draw our hero"
+(defn draw-hero2 "draw our hero"
   [pos]
   (let [x (:x pos)
         y (:y pos)]
-  (fill 255 0 0)
+  (dorun (fill 255 0 0)
   (rect x y 20 20)
-  (fill 0 0 255)
-  (rect x (+ 20 y) 40 40 )))
+  (fill-int 0 0 255)
+  (rect x (+ 20 y) 40 40))))
+
+
+(defn draw-hero
+  "Draw a hero at the given x y"
+  [pos]
+  (fill-int 128)
+  (ellipse (:x pos) (:y pos) 50 80))
+
 
 (defn render-hero
   "Render the hero entities in the game"

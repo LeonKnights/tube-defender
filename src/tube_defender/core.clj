@@ -34,7 +34,8 @@
                  both (and left right)]
              (cond both (sc/update-entity ces entity [:position :x] dec)
                    left (sc/update-entity ces entity [:position :x] dec)
-                   right (sc/update-entity ces entity [:position :x] inc)))))
+                   right (sc/update-entity ces entity [:position :x] inc)
+                   :else ces))))
 
 
 ;;;;;;;disc mover should use keybindings instead of just calling inc;;;;;;;
@@ -75,7 +76,7 @@
                                         [(rat)
                                          (position 30 60)
                                          (velocity 1)]]
-                             :systems [(rat-mover)
+                             :systems [(rat-mover) (hero-mover)
                                         ]})))
 
 
