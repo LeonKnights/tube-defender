@@ -40,15 +40,6 @@
   (rect (:x pos) (+ (rand-int 10) (- (:y pos) 20)) 20 10)
   (rect (+ (:x pos) 40) (+ (rand-int 10) (- (:y pos) 20)) 20 10))
 
-
-(defn draw-hero2
-  "Draw a hero at the given x y"
-  [pos]
-  (fill-int 128)
-  (ellipse (:x pos) (- 80 (:y pos)) 10 10)
-  (ellipse (:x pos) (:y pos) 10 80))
-
-
 (defn render-hero
   "Render the hero entities in the game"
   [ces]

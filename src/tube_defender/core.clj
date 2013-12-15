@@ -5,6 +5,8 @@
              [tube-defender.render :as render])
   (:gen-class))
 
+(def rat-rate (atom 0))
+
 ;;;;;;;;;;;;;;;;components;;;;;;;;;;;;;;;;;;
 
 (sc/defcomponent rat [] {})
@@ -24,6 +26,12 @@
            (sc/update-entity ces
                              entity
                              [:position :y] inc)))
+
+(sc/defcomponentsystem rat-remover :rat []
+  [ces entity _]
+  (sc/letc ces entity
+           [y [:position :y]]
+           (if (< y 300) ces (sc/remove-entity ces entity))))
 
 ;;;;;;;hero mover should use key bindings instead of just calling inc
 ;;;;TODO. make this thing work plz
@@ -70,7 +78,16 @@
   (sc/update-entity ces entity [:volley-multiple :vm] inc))
 
 ;;;;;;;;;;;;;;;rat generator;;;;;;;;;;;;;;;;;
-;(sc/defsystem rat-gen  )
+(sc/defsystem rat-gen  []
+  [ces]
+  (if (== 60 @rat-rate)
+    (do (reset! rat-rate 0)    (sc/add-entity ces [(rat) (position (rand-int 1000) 0)]))
+    (do (swap! rat-rate inc) ces)))
+
+
+
+
+
 
 ;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
@@ -89,14 +106,17 @@
                                         [(rat)
                                          (position 50 60)
                                          (velocity 1)]]
-                             :systems [(rat-mover) 
+                             :systems [(rat-mover)
+                                       (rat-remover)
+                                       (rat-gen)
                                        (hero-mover)
-                                       (disc-mover)]})))
+                                       (disc-mover)
+                                        ]})))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; y should inc to 3
 (let [rat-ces (atom (sc/make-ces {:entities [[(rat) (position 10 2) (velocity 0)]]
-                                  :systems [(rat-mover)]}))]
+                                  :systems [(rat-gen) (rat-mover)]}))]
   (swap! rat-ces sc/advance-ces))
 
 ;;;;;;;;;;;;;;;;;;;;;;;test hero ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
