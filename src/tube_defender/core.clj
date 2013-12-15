@@ -113,29 +113,6 @@
                                        (disc-mover)
                                         ]})))
 
-;;;;;;;;;;;;;;;;;;;;;;;;test rat ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; y should inc to 3
-(let [rat-ces (atom (sc/make-ces {:entities [[(rat) (position 10 2) (velocity 0)]]
-                                  :systems [(rat-gen) (rat-mover)]}))]
-  (swap! rat-ces sc/advance-ces))
-
-;;;;;;;;;;;;;;;;;;;;;;;test hero ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; x should inc to 201
-(let [hero-ces (atom (sc/make-ces {:entities [[(hero) (position 200 400) (velocity 0)]]
-                                   :systems [(hero-mover)]}))]
-  (swap! hero-ces sc/advance-ces))
-
-;;;;;;;;;;;;;;;;test disc ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(let [disc-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 10 10)]
-                                              [(rat) (position 10 10) (velocity 20)]]
-                                   :systems [(disc-mover)]}))]
-  (swap! disc-ces sc/advance-ces))
-
-;;;;;;;;;;;;;;;test volley multiple incrementer;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(let [dvm-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 0) (volley-multiple 1)]]
-                                  :systems [(volley-multiplier)]}))]
-  (swap! dvm-ces sc/advance-ces))
-
 (defn advance-state []
   (swap! ces sc/advance-ces))
 
