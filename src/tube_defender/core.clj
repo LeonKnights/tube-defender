@@ -38,10 +38,23 @@
    y [:position :y]]
   (sc/update-entity (sc/update-entity ces entity [:position :y] inc) entity [:position :x] inc)))
 
+;;;;;disc position validator will make sure the junk don't fly off the dern screen;;;;;
+(sc/defcomponentsystem disc-mover :disc []
+  [ces entity _]
+  (sc/letc ces entity
+  [x [:position :x]
+   y [:position :y]]
+;;if edge of screen, reverse x, if top of screen reverse y, if bottom and not on player, stop
+  ;(sc/update-entity (sc/update-entity ces entity [:position :y] inc) entity [:position :x] inc)
+  ))
+
+
 ;;;;;;;;volley multiple should inc if disc is caught by hero, but that logic is outside of this system. all it cares about is how to do it;;;;;
 (sc/defcomponentsystem volley-multiplier :disc []
   [ces entity _]
   (sc/update-entity ces entity [:volley-multiple :vm] inc))
+
+
 
 ;;;;;;;;;;;;;;;;;;canonic component entity system;;;;;;;;;;;;;;;;
 (def ces (atom (sc/make-ces {:entities [[(hero)
@@ -66,6 +79,10 @@
                                   :systems [(rat-mover)]}))]
   (swap! rat-ces sc/advance-ces))
 
+
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;test hero ces update;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; x should inc to 201
 (let [hero-ces (atom (sc/make-ces {:entities [[(hero) (position 200 400) (velocity 0)]]
@@ -81,6 +98,10 @@
 (let [dvm-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 0) (volley-multiple 1)]]
                                   :systems [(volley-multiplier)]}))]
   (swap! dvm-ces sc/advance-ces))
+
+
+
+
 
 (defn setup []
   (smooth)
