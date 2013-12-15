@@ -1,7 +1,8 @@
 (ns tube-defender.core
   (:require  [quil.core :refer :all]
              [simplecs.core :as sc]
-             [tube-defender.key-input :only input-keys])
+             [tube-defender.key-input :only input-keys]
+             [tube-defender.render :as render])
   (:gen-class))
 
 ;;;;;;;;;;;;;;;;components;;;;;;;;;;;;;;;;;;
