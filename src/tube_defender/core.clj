@@ -113,4 +113,19 @@
   [& args]
   (ki/startSketch))
 
-(def startSketch tube-defender.key-input/startSketch)
+(defn setup []
+  (smooth)
+  (frame-rate 60)
+  (background 200))
+
+(defn startSketch []
+  (defsketch tube-defender
+    :title "TUBE DEFENDER"
+    :size (params :screen-dimensions)
+    :setup setup
+    :draw render
+    :target :perm-frame
+    :key-pressed ki/keydown-event
+    :key-released ki/keyup-event))
+
+(startSketch)
