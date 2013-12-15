@@ -26,4 +26,11 @@
 ;;;;;;;;;;;;;;;test volley multiple incrementer;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (deftest vm-inv-test (testing "volley multiplier works right" (let [dvm-ces (atom (sc/make-ces {:entities [[(disc) (position 200 400) (velocity 0) (volley-multiple 1)]]
                                   :systems [(volley-multiplier)]}))]
-  (swap! dvm-ces sc/advance-ces))))
+                                                                (swap! dvm-ces sc/advance-ces))))
+
+(deftest train-mover-test (testing "train can move"
+                            (let [train-ces (atom (sc/make-ces {:entities
+                                                                [[(train)
+                                                                  (position 200 200)]]
+                                                                :systems [(train-mover)]}))]
+                              (swap! train-ces sc/advance-ces))))
