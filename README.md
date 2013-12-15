@@ -10,3 +10,8 @@ To Run
 ```
 lein run
 ```
+To Run from the REPL
+---
+```
+(startSketch)
+```
