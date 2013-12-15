@@ -17,7 +17,7 @@
 (defn render-hud
   "Render the game's hud (head up display). This is drawn on top of everything else"
   []
-  (text (str (deref tube-defender.key-input/input-keys)) 10 350))
+  (text (str (deref tube-defender.keyinput/input-keys)) 10 350))
 
 
 (defn draw-rat
@@ -33,12 +33,3 @@
     (let [rat-entities (sc/entities-with-component @ces :rat)
           rat-positions (map #(sc/get-component @ces % :position) rat-entities)]
          (map draw-rat rat-positions))))
-
-(defn render 
-  "Renders every entity in the given game state"
-  []
-  (let [ces tube-defender.core/ces]
-    (tube-defender.core/advance-state)
-    (render-bg)
-    (render-rats ces)
-    (render-hud)))
