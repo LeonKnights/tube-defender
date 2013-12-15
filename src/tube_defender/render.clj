@@ -30,21 +30,23 @@
   (fill-int 128)
   (ellipse (:x pos) (:y pos) 10 10))
 
-(defn draw-hero2 "draw our hero"
+(defn draw-hero "draw our hero"
   [pos]
-  (let [x (:x pos)
-        y (:y pos)]
-  (dorun (fill 255 0 0)
-  (rect x y 20 20)
-  (fill-int 0 0 255)
-  (rect x (+ 20 y) 40 40))))
+  (fill 200)
+  (ellipse (+ (:x pos) 20) (- (:y pos) 50) 20 20)
+  (fill 0 0 255)
+  (rect (:x pos) (- (:y pos) 50) 40 40)
+  (fill 220 120 120)
+  (rect (:x pos) (+ (rand-int 10) (- (:y pos) 20)) 20 10)
+  (rect (+ (:x pos) 40) (+ (rand-int 10) (- (:y pos) 20)) 20 10))
 
 
-(defn draw-hero
+(defn draw-hero2
   "Draw a hero at the given x y"
   [pos]
   (fill-int 128)
-  (ellipse (:x pos) (:y pos) 50 80))
+  (ellipse (:x pos) (- 80 (:y pos)) 10 10)
+  (ellipse (:x pos) (:y pos) 10 80))
 
 
 (defn render-hero
