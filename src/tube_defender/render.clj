@@ -64,9 +64,9 @@
   "Draw a train at the given x y"
   [pos]
   (fill 255,17,0 )
-  (ellipse (:x pos) (:y pos) 50 200)
+  (rect (:x pos) (:y pos) 50 500)
   (fill 246,243,80)
-  ;(triangle 250 50 22 15 200 20)
+  (triangle 250 50 22 15 200 20)
   ;(def x1 {:x 10 :y 5})
   )
 
