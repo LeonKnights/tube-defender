@@ -108,24 +108,18 @@
 (defn advance-state []
   (swap! ces sc/advance-ces))
 
-(defn -main
-  "main"
-  [& args]
-  (ki/startSketch))
-
 (defn setup []
   (smooth)
   (frame-rate 60)
   (background 200))
 
-(defn startSketch []
-  (defsketch tube-defender
-    :title "TUBE DEFENDER"
-    :size (params :screen-dimensions)
+(defn -main
+  "main"
+  [& args]
+ (sketch :title "TUBE DEFENDER"
+    :size [500 500]
     :setup setup
-    :draw render
+    :draw render/render
     :target :perm-frame
     :key-pressed ki/keydown-event
     :key-released ki/keyup-event))
-
-(startSketch)
