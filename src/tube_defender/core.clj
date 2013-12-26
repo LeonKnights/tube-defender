@@ -158,6 +158,9 @@
   (render/render-disc ces)
   (render/render-hud))
 
+(defn exit-on-close [sketch]
+  (let [frame (-> sketch .getParent .getParent .getParent .getParent)]
+    (.setDefaultCloseOperation frame javax.swing.JFrame/EXIT_ON_CLOSE)))
 
 (defn setup []
   (smooth)
@@ -167,11 +170,11 @@
 (defn -main
   "main"
   [& args]
- (sketch :title "TUBE DEFENDER"
+ (exit-on-close (sketch :title "TUBE DEFENDER"
     :size [(:height playfield-size)
            (:width playfield-size)]
     :setup setup
     :draw core-render
     :target :perm-frame
     :key-pressed ki/keydown-event
-    :key-released ki/keyup-event))
+    :key-released ki/keyup-event)))
