@@ -2,7 +2,8 @@
   (:require  [quil.core :refer :all]
              [simplecs.core :as sc]
              [tube-defender.keyinput :as ki]
-             [tube-defender.render :as render])
+             [tube-defender.render :as render]
+             [tube-defender.components :refer :all])
   (:gen-class))
 
 (def rat-rate (atom 0))
@@ -11,15 +12,15 @@
 
 ;;;;;;;;;;;;;;;;components;;;;;;;;;;;;;;;;;;
 
-(sc/defcomponent rat [] {})
-(sc/defcomponent hero [] {})
-(sc/defcomponent disc [in-player-hand] {:in-player-hand in-player-hand})
-(sc/defcomponent train [] {})
-(sc/defcomponent position [x y] {:x x :y y})
-(sc/defcomponent volley-multiple [vm] {:vm vm})
-(sc/defcomponent velocity
-                 ([v] {:v v})
-                 ([x y] {:v x :x x :y y}))
+;(sc/defcomponent rat [] {})
+;(sc/defcomponent hero [] {})
+;(sc/defcomponent disc [in-player-hand] {:in-player-hand in-player-hand})
+;(sc/defcomponent train [] {})
+;(sc/defcomponent position [x y] {:x x :y y})
+;(sc/defcomponent volley-multiple [vm] {:vm vm})
+;(sc/defcomponent velocity
+ ; ([v] {:v v})
+ ; ([x y] {:v x :x x :y y}))
 
 ;;;;;;;;;;;;;;;;;;;systems;;;;;;;;;;;;;;;;;;;
 (sc/defcomponentsystem rat-mover :rat  []
