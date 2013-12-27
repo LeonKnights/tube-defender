@@ -44,8 +44,7 @@
   (sc/letc ces entity
            [y [:position :y]]
            (if (< y 300) ces (sc/remove-entity ces entity))))
-;;;;;;;hero mover should use key bindings instead of just calling inc
-;;;;TODO. make this thing work plz
+
 (sc/defcomponentsystem hero-mover :hero  []
   [ces entity _]
   (sc/letc ces entity
@@ -76,15 +75,18 @@
             x  [:position :x]
             y  [:position :y]
             disc-held-by-player [:disc :in-player-hand]]
-            (if disc-held-by-player
+           (if (and disc-held-by-player (contains? @ki/input-keys \space))
+             (sc/update-entity (sc/update-entity (sc/update-entity ces entity  [:position :y] + dy)  entity [:position :x] + dx) entity [:disc :in-player-hand] :false
+                               )
+             (if disc-held-by-player
               (let [hero-entity (first (sc/entities-with-component ces :hero))
                     hero-pos (sc/get-component ces hero-entity :position)]
                 (set-entity-position ces entity (:x hero-pos) (:y hero-pos)))
-              (sc/update-entity
+                (sc/update-entity
                                (sc/update-entity ces entity
                                                  [:position :y] + dy)
                                entity
-                               [:position :x] + dx))))
+                               [:position :x] + dx)))))
 
 ;;;;;disc position validator will make sure the junk don't fly off the dern screen;;;;;
 (sc/defcomponentsystem disc-move-validator :disc []

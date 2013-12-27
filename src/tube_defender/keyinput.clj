@@ -10,10 +10,12 @@
   KeyEvent/VK_DOWN :down
   KeyEvent/VK_LEFT :left
   KeyEvent/VK_RIGHT :right
+  KeyEvent/VK_SPACE :space
+  \space :space
   \w :up
   \s :down
   \a :left
-                 \d :right})
+  \d :right})
 
 (def params {
         :screen-dimensions [400 400]
